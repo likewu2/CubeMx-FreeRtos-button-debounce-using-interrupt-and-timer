@@ -6,5 +6,5 @@ stm32f407-disc: This code debounce a user button pressing by using interrupt and
 Operation:
   
     If user button is pressed then turn on audio, press again then turn off audio.
-    LED3 is turn on as long as the user button press and turn off when button is release.
+    LED3 is turn on as long as the user button press and turn off when button is released.
     
