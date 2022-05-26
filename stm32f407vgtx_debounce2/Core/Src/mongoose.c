@@ -15,6 +15,11 @@
 // Alternatively, you can license this software under a commercial
 // license, as set out in https://www.mongoose.ws/licensing/
 
+#define MG_ARCH MG_ARCH_FREERTOS_LWIP
+#define PATH_MAX 50
+#define LWIP_IPV4 1
+//#define __GNUC__
+
 #include "mongoose.h"
 
 #ifdef MG_ENABLE_LINES
