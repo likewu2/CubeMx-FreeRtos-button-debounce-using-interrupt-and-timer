@@ -139,7 +139,8 @@ int main(void)
 
   /* We should never get here as control is now taken by the scheduler */
   /* Infinite loop */
-  Suite* aa = mqtt_suite();
+  //Suite* aa = mqtt_suite();
+  //START_TEST();
   /* USER CODE BEGIN WHILE */
   while (1)
   {
@@ -252,6 +253,7 @@ void StartDefaultTask(void *argument)
   /* init code for LWIP */
   MX_LWIP_Init();
   /* USER CODE BEGIN 5 */
+  START_TEST();
   /* Infinite loop */
   for(;;)
   {

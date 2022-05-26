@@ -14,7 +14,7 @@
 #define EXPECT_RETNULL(x) EXPECT_RETX(x, NULL)
 
 typedef struct {
-  TFun func;
+  //TFun func;
   const char *name;
 } testfunc;
 
@@ -25,10 +25,10 @@ typedef struct {
    _tcase_add_test((tc),(tf).func,(tf).name,0, 0, 0, 1)
 
 /** typedef for a function returning a test suite */
-typedef Suite* (suite_getter_fn)(void);
+//typedef Suite* (suite_getter_fn)(void);
 
 /** Create a test suite */
-Suite* create_suite(const char* name, testfunc *tests, size_t num_tests, SFun setup, SFun teardown);
+//Suite* create_suite(const char* name, testfunc *tests, size_t num_tests, SFun setup, SFun teardown);
 
 #ifdef LWIP_UNITTESTS_LIB
 int lwip_unittests_run(void)
@@ -40,3 +40,5 @@ int lwip_unittests_run(void)
 void lwip_check_ensure_no_alloc(unsigned int skip);
 
 #endif /* LWIP_HDR_LWIP_CHECK_H */
+
+

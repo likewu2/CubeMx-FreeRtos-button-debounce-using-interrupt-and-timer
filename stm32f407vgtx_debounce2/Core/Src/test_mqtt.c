@@ -5,6 +5,8 @@
 #include "lwip/apps/mqtt_priv.h"
 #include "lwip/netif.h"
 
+#include <string.h>
+
 const ip_addr_t test_mqtt_local_ip = IPADDR4_INIT_BYTES(192, 168, 220, 1);
 const ip_addr_t test_mqtt_remote_ip = IPADDR4_INIT_BYTES(192, 168, 220, 1);
 const ip_addr_t test_mqtt_netmask = IPADDR4_INIT_BYTES(255, 255, 255, 0);
@@ -68,7 +70,7 @@ static void test_mqtt_connection_cb(mqtt_client_t *client, void *arg, mqtt_conne
   LWIP_UNUSED_ARG(status);
 }
 
-START_TEST(basic_connect)
+void START_TEST(void)
 {
   mqtt_client_t* client;
   struct netif netif;
@@ -81,18 +83,18 @@ START_TEST(basic_connect)
   };
   struct pbuf *p;
   unsigned char rxbuf[] = {0x20, 0x02, 0x00, 0x00};
-  LWIP_UNUSED_ARG(_i);
+  //LWIP_UNUSED_ARG(_i);
 
   test_mqtt_init_netif(&netif, &test_mqtt_local_ip, &test_mqtt_netmask);
 
   client = mqtt_client_new();
-  fail_unless(client != NULL);
+  //fail_unless(client != NULL);
   err = mqtt_client_connect(client, &test_mqtt_remote_ip, 1234, test_mqtt_connection_cb, NULL, &client_info);
-  fail_unless(err == ERR_OK);
+  //fail_unless(err == ERR_OK);
 
   client->conn->connected(client->conn->callback_arg, client->conn, ERR_OK);
   p = pbuf_alloc(PBUF_RAW, sizeof(rxbuf), PBUF_REF);
-  fail_unless(p != NULL);
+  //fail_unless(p != NULL);
   p->payload = rxbuf;
   /* since we hack the rx path, we have to hack the rx window, too: */
   client->conn->rcv_wnd -= p->tot_len;
@@ -104,12 +106,12 @@ START_TEST(basic_connect)
   /* fixme: mqtt_client_fre() is missing... */
   mem_free(client);
 }
-END_TEST
+//END_TEST
 
-Suite* mqtt_suite(void)
+/*Suite* mqtt_suite(void)
 {
   testfunc tests[] = {
     TESTFUNC(basic_connect),
   };
   return create_suite("MQTT", tests, sizeof(tests)/sizeof(testfunc), mqtt_setup, mqtt_teardown);
-}
+}*/
