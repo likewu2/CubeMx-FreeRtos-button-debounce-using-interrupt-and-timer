@@ -22,8 +22,9 @@
 #include "lwip.h"
 #include "usb_device.h"
 
-#define MG_ARCH MG_ARCH_FREERTOS_LWIP
-#include "mongoose.h"
+//#define MG_ARCH MG_ARCH_FREERTOS_LWIP
+//#include "mongoose.h"
+#include "lwip/apps/mqtt.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
