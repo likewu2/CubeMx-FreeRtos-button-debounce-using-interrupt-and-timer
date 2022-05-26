@@ -20,8 +20,8 @@ RM := rm -rf
 -include Middlewares/Third_Party/LwIP/src/apps/mqtt/subdir.mk
 -include Middlewares/Third_Party/LwIP/src/api/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/subdir.mk
--include Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/subdir.mk
--include Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/subdir.mk
+-include Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM3/subdir.mk
+-include Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/subdir.mk
 -include Middlewares/ST/STM32_USB_Device_Library/Core/Src/subdir.mk
 -include Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/subdir.mk
@@ -78,8 +78,8 @@ all: main-build
 main-build: stm32f407vgtx_debounce2.elf secondary-outputs
 
 # Tool invocations
-stm32f407vgtx_debounce2.elf stm32f407vgtx_debounce2.map: $(OBJS) $(USER_OBJS) E:\app\julia\CubeMx-FreeRtos-button-debounce-using-interrupt-and-timer\stm32f407vgtx_debounce22\STM32F407VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "stm32f407vgtx_debounce2.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"E:\app\julia\CubeMx-FreeRtos-button-debounce-using-interrupt-and-timer\stm32f407vgtx_debounce22\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="stm32f407vgtx_debounce2.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+stm32f407vgtx_debounce2.elf stm32f407vgtx_debounce2.map: $(OBJS) $(USER_OBJS) E:\app\julia\CubeMx-FreeRtos-button-debounce-using-interrupt-and-timer\stm32f407vgtx_debounce2\STM32F407VGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "stm32f407vgtx_debounce2.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"E:\app\julia\CubeMx-FreeRtos-button-debounce-using-interrupt-and-timer\stm32f407vgtx_debounce2\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="stm32f407vgtx_debounce2.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

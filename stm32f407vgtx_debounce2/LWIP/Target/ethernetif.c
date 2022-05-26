@@ -178,6 +178,9 @@ void HAL_ETH_ErrorCallback(ETH_HandleTypeDef *handlerEth)
 static void low_level_init(struct netif *netif)
 {
   HAL_StatusTypeDef hal_eth_init_status = HAL_OK;
+/* USER CODE BEGIN OS_THREAD_ATTR_CMSIS_RTOS_V2 */
+  osThreadAttr_t attributes;
+/* USER CODE END OS_THREAD_ATTR_CMSIS_RTOS_V2 */
 /* USER CODE BEGIN low_level_init Variables Initialization for User BSP */
 
 /* USER CODE END low_level_init Variables Initialization for User BSP */
@@ -238,16 +241,19 @@ static void low_level_init(struct netif *netif)
   #endif /* LWIP_ARP */
 
   /* create a binary semaphore used for informing ethernetif of frame reception */
-  RxPktSemaphore = xSemaphoreCreateBinary();
+  RxPktSemaphore = osSemaphoreNew(1, 1, NULL);
 
   /* create a binary semaphore used for informing ethernetif of frame transmission */
-  TxPktSemaphore = xSemaphoreCreateBinary();
+  TxPktSemaphore = osSemaphoreNew(1, 1, NULL);
 
   /* create the task that handles the ETH_MAC */
-/* USER CODE BEGIN OS_THREAD_DEF_CREATE_CMSIS_RTOS_V1 */
-  osThreadDef(EthIf, ethernetif_input, osPriorityRealtime, 0, INTERFACE_THREAD_STACK_SIZE);
-  osThreadCreate (osThread(EthIf), netif);
-/* USER CODE END OS_THREAD_DEF_CREATE_CMSIS_RTOS_V1 */
+/* USER CODE BEGIN OS_THREAD_NEW_CMSIS_RTOS_V2 */
+  memset(&attributes, 0x0, sizeof(osThreadAttr_t));
+  attributes.name = "EthIf";
+  attributes.stack_size = INTERFACE_THREAD_STACK_SIZE;
+  attributes.priority = osPriorityRealtime;
+  osThreadNew(ethernetif_input, netif, &attributes);
+/* USER CODE END OS_THREAD_NEW_CMSIS_RTOS_V2 */
 
 /* USER CODE BEGIN low_level_init Code 1 for User BSP */
 
@@ -324,7 +330,7 @@ static err_t low_level_output(struct netif *netif, struct pbuf *p)
   pbuf_ref(p);
 
   HAL_ETH_Transmit_IT(&heth, &TxConfig);
-  while(osSemaphoreWait(TxPktSemaphore, TIME_WAITING_FOR_INPUT)!=osOK)
+  while(osSemaphoreAcquire(TxPktSemaphore, TIME_WAITING_FOR_INPUT)!=osOK)
 
   {
   }
@@ -363,14 +369,14 @@ static struct pbuf * low_level_input(struct netif *netif)
  *
  * @param netif the lwip network interface structure for this ethernetif
  */
-static void ethernetif_input(void const * argument)
+void ethernetif_input(void* argument)
 {
   struct pbuf *p = NULL;
   struct netif *netif = (struct netif *) argument;
 
   for( ;; )
   {
-    if (osSemaphoreWait(RxPktSemaphore, TIME_WAITING_FOR_INPUT) == osOK)
+    if (osSemaphoreAcquire(RxPktSemaphore, TIME_WAITING_FOR_INPUT) == osOK)
     {
       do
       {
@@ -510,8 +516,7 @@ u32_t sys_now(void)
   * @param  argument: netif
   * @retval None
   */
-
-void ethernet_link_thread(void const * argument)
+void ethernet_link_thread(void* argument)
 {
 
 /* USER CODE BEGIN ETH link init */
