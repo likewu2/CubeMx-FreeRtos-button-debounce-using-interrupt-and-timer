@@ -89,7 +89,7 @@ void START_TEST(void)
 
   client = mqtt_client_new();
   //fail_unless(client != NULL);
-  err = mqtt_client_connect(client, &test_mqtt_remote_ip, 1234, test_mqtt_connection_cb, NULL, &client_info);
+  err = mqtt_client_connect(client, &test_mqtt_remote_ip, 1883, test_mqtt_connection_cb, NULL, &client_info);
   //fail_unless(err == ERR_OK);
 
   client->conn->connected(client->conn->callback_arg, client->conn, ERR_OK);
