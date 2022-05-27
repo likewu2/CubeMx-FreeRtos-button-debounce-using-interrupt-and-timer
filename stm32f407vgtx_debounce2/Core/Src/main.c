@@ -112,6 +112,9 @@ int main(void)
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
   osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+
+  //osKernelInitialize();
+
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
@@ -227,6 +230,7 @@ static void MX_GPIO_Init(void)
   * @retval None
   */
 /* USER CODE END Header_StartDefaultTask */
+//extern void StartDefaultTask(void const * argument)
 void StartDefaultTask(void const * argument)
 {
   /* init code for USB_DEVICE */
